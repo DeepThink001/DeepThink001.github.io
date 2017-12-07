@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title># Orbital Free Density Functional Theory</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">Deep'Think </a></h1>
+                <nav><ul>
+                    <li class="active"><a href="/category/dft.html">DFT</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/orbital-free-density-functional-theory.html" rel="bookmark"
+           title="Permalink to # Orbital Free Density Functional Theory"># Orbital Free Density Functional Theory</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2017-12-07T00:00:00+08:00">
+                Published: 四 07 十二月 2017
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/hongbin.html">hongbin</a>
+        </address>
+<p>In <a href="/category/dft.html">DFT</a>.</p>
+
+</footer><!-- /.post-info -->      <h2>Basic mathmetics</h2>
+<h3>Discrete Fourier transform</h3>
+<p>Functions are treated as a periodic function.
+$$
+\begin{array}{c}
+f(x+T)=f(x)\
+f(x) = \left(\int_{-\infty}^{+\infty}f(x)e^{-ikx}\right)e^{-ikT}
+\end{array}
+$$
+Therefore, $k=\frac{2\pi m}{T}$
+For periodic functions:
+$$
+\int_{-\infty}^{+\infty}f(x)e^{-ikx}=\lim_{M\to\infty}M\int_0^Tf(x)e^{-ikx}
+$$
+M is the number of period inside the integral region.</p>
+<p>rescale the domain into $(0, 1)$:
+$$
+\begin{align}
+\int_0^Tf(x)e^{-ikx}
+&amp; =\int_0^1\tilde{f}(t)e^{-ikTt}\
+&amp; =\int_0^1\tilde{f}(t)e^{-i2\pi mt}\
+&amp; = \lim_{N\to\infty}\frac{1}{N}\sum_{k=0}^{N}f_ke^{-i2\pi mk/N}
+\end{align}
+$$
+N is the number of samples of a discrete function.
+$$
+\hat{f}<em k="0">m=\frac{1}{N}\sum</em>^{N}f_ke^{-i2\pi mk/N}
+$$
+Similarly:
+$$
+f_k=\frac{1}{N}\sum_{m=0}^Nf_me^{i2\pi mk/N}
+$$
+To make the formula consistent, that is:
+$$
+\mathcal{F}^{-1}\mathcal{F}{f(x)}=f(x)
+$$
+The Discrete Fourier transform we apply are:
+$$
+\begin{array}{c}
+\hat{f}<em k="0">m=\sum</em>^{N}f_ke^{-i2\pi mk/N}\
+f_k=\frac{1}{N}\sum_{m=0}^Nf_me^{i2\pi mk/N}
+\end{array}
+$$
+The normalization is assigned to the inverse Fourier transform.</p>
+<h2>Basic physics</h2>
+<h3>1D lattice solver</h3>
+<p>The Schrodinger function of the periodic atom chain:
+$$
+\left(-\frac{\hbar^2}{2m_e}\nabla_x^2+V(x)\right)\psi(x)=E\psi(x)
+$$
+the wavefunction $\psi(x)$ obeies the Bloch theorem:
+$$
+\begin{array}{c}
+\psi(x)=e^{ikx}u(x)\
+\mathbb{s.t.}\; u(x+x_0)=u(x)
+\end{array}
+$$
+Expand the Hamiltonian in kspace:
+$$
+H_{k'k}=\frac{\hbar^2k^2}{2m_e}\delta_{k'k}+\int_xV(x)e^{-i(k'-k)x}
+$$
+Using periodic B.C.
+$$
+\begin{array}{c}
+k=\frac{2\pi m}{Na_0}+\frac{2\pi l}{a_0}\
+m\in(-N/2, N/2);\,l\in\mathbb{Z^+}
+\end{array}
+$$
+where $N$ is the length of the lattice and $a_0$ is the lattice constant.</p>
+<p>Set $a_0=1$, $E_0=1$, the dimensionless Hamiltonian becomes:
+$$
+H_{k'k}=\frac{k^2}{2}\delta_{k'k}+\int_xV(x)e^{-i(k'-k)x}
+$$
+and $k=\frac{2\pi m}{N}+2\pi l$, set $\tilde{k}=\frac{m}{N}$, then $k=2\pi(\tilde{k}+l)$.</p>
+<p>$l$ represents the $G$ vector and $m$ is the points in Brilluion zone.
+$$
+H_{l'l}(\tilde{k})=2\pi^2(\tilde{k}+l)^2\delta_{l'l}+\int_0^1\mathbb{d}x\;V(x)e^{-i2\pi(l'-l)x}
+$$
+Finally
+$$
+H_{l'l}(\tilde{k})=2\pi^2(\tilde{k}+l)^2\delta_{l'l}+\hat{V}(l'-l)
+$$</p>
+<h3>Multi-electron wavefunction</h3>
+<p>Non-correlated N electron wavefunction (for a particular band number), using slator determinant:
+$$
+\Psi_N(x_1, x_2, \ldots)=\frac{1}{\sqrt{N!}}\left|
+\begin{array}{ccc}
+\psi_{n,k_1}(x_1) &amp; \psi_{n,k_1}(x_2) &amp; \ldots\
+\psi_{n,k_2}(x_1) &amp; \psi_{n,k_2}(x_2) &amp; \ldots\
+\vdots &amp; \vdots &amp; \ddots
+\end{array}\right|
+$$</p>
+<h3>Total kinetic energy per cell</h3>
+<p>The kinetic energy is represented as:
+$$
+\begin{align}
+T
+&amp;=\langle\Psi_N|\sum_{i=1}^N\frac{\hat{p_i}^2}{2m_e}|\Psi_N\rangle\
+&amp;=\sum_{n,k}\sum_{G}\frac{(k+G)^2}{2}\hat{u}_n^*(G)\hat{u}_n(G)
+\end{align}
+$$
+when potential energy vanish, the system becomes a homogeneous free electron gas, and the kinetic energy could be precisely represented by Thomas-Fermi functional, the 1D form of TF functional is:
+$$
+\begin{align}
+T
+&amp;=\frac{\pi^2}{6}\rho^3\
+&amp;=\frac{\pi^2}{6}\int_0^1\nu\rho(x)^2\;\mathbb{d}x
+\end{align}
+$$
+where $\rho(x)$ is the free electron density (which is a constant in this case), and $\nu$ is the electron occupation per cell.</p>
+<p>The kinetic energy of homogeneous free electron computed by our program is 0.043202826988339334 (dimensionless), using the electron density obtained by our program, the Thomas-Fermi theory gives 0.043538103916186795, the discrepency between these two method is 0.000335276927847461.</p>
+<h3>Density functional theory</h3>
+<p>Total energy
+$$
+E = \mathbb{F}[\rho(x)]+\int_xV_{ext}(x)\rho(x)
+$$
+Where $\rho(x)$ is the electron density.</p>
+<p>Information of particular system is encoded in $V_{ext}(x)$, while $\mathbb{F}[\rho(x)]$ is a universal <strong>functional</strong> describes the behavior of electron, independent of external interactions.</p>
+<p>properties of the universal functional ......
+<em> symmetry (translation, rotation ......)
+</em> ......</p>
+<h2>Mechine learning</h2>
+<h3>Traditional method (KRR)</h3>
+<p>$n(r)$ is the electron-density of the system.
+$$
+E_{tot}=F[n]+v_{ext}[n]
+$$
+where $F[n]$ is a universal functional.
+Using Taylor's expansion:
+$$
+F[n]=\int a_1(r)n(r)\,\mathbb{dr} + \int_{r_1}\int_{r_2}a_1(r_1)a_2(r_2)n(r_1)n(r_2)\,\mathbb{dr_1}\mathbb{dr_2}+\cdots
+$$
+Taking only the first term and discretise:
+$$
+F[n]\approx\sum_{k=1}^{N}a(r_k)n(r_k)
+$$
+$N$ is the number of points in real space.
+The linear relation cannot offer a good approximation, we add non-linearity into the equation by change $n(r_k)\to\phi_k[n(r)]$.
+$$
+F[n]\approx\sum_{k=1}^{N}a_k\phi_k[n(r)]
+$$
+with $a_k=a(r_k)$.</p>
+<p>In order to make the approximation good enough, we have to find a set of $a_k$ that minimize:
+$$
+\sum_i|\sum_{k}a_k\phi_k[n^i(r)]-T^i|^2+\frac{1}{2}\lambda\sum_k a_ka_k
+$$
+where $i$ represents the index of sample in dataset.</p>
+<p>let $z_i=\sum_{k}a_k\phi_k[n^i(r)]-T^i$, and convert the above problem to:
+$$
+\mathop{\mathbb{min}}<em k>{a_k,z_i}\;\frac{1}{2}z_i^2+\frac{1}{2}\lambda\sum_ka_ka_k
+$$
+$s.t.\;z_i=\sum</em>a_k\phi_k[n^i(r)]-T^i$.
+make it a unconstrained problem and use Lagrange duality, we obtained:
+$$
+\begin{array}{c}
+z_i-\alpha_i=0\
+\lambda a_k+\sum_i\alpha_i\phi_k[n^i(r)]=0\
+\end{array}
+$$
+then:
+$$
+F[n]\approx -\frac{1}{\lambda}\sum_i\alpha_i\sum_k\phi_k[n^i(r)]\phi_k[n(r)]
+$$
+set $\mathcal{K}(\phi^i, \phi)=\sum_k(r_0+n^i_kn_k)^d$, where $r_0$ and $d$ are constants.
+then:
+$$
+F[n]\approx -\frac{1}{\lambda}\sum_i\alpha_i\mathcal{K}(\phi^i, \phi)
+$$
+$\alpha_i$ are the variational parameters that will be determined in the training process.</p>
+<h3>Neural network (CNN)</h3>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>
